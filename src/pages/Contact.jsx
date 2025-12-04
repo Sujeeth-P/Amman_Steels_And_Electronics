@@ -6,20 +6,24 @@ import Accordion from '../components/ui/Accordion';
 export default function Contact() {
   const faqItems = [
     {
-      title: "Do you provide delivery for small orders?",
-      content: "Yes, we provide delivery for all orders. However, free delivery is applicable only for bulk orders above ₹50,000 within a 20km radius. For smaller orders, nominal transport charges apply."
+      title: "What kind of tools and equipment can I purchase at this hardware shop?",
+      content: "You can buy hand-held tools, power tools, electric tools, keys, hinges, locks, chains, plumbing supplies, household and industrial cleaners, paints, basic tool kits, advanced tool kits, drillers, industrial vacuums and blowers, fasteners, stoppers, fittings, ropes, springs, and several other items for household and commercial use."
     },
     {
-      title: "What brands of cement do you stock?",
-      content: "We are authorized dealers for UltraTech, Dalmia, Ramco, and Chettinad Cement. We ensure fresh stock is always available."
+      title: "Can Sri Amman Electricals&Hardwares in Perundurai West arrange for a civic worker, plumber, or mason for me?",
+      content: "Sri Amman Electricals&Hardwares only sells hardware items. However, some of them also employ plumbers or electricians. You may request them to suggest a good handyman to carry out those jobs for you."
     },
     {
-      title: "Can I get a GST invoice for my purchase?",
-      content: "Absolutely. All our sales are billed with GST invoices. If you are a business, please provide your GSTIN at the time of billing for input credit."
+      title: "Will Sri Amman Electricals&Hardwares in Perundurai be able to service my old tools?",
+      content: "Sri Amman Electricals&Hardwares sells tools. You can check with Sri Amman Electricals&Hardwares to get more information on this."
     },
     {
-      title: "Do you accept returns?",
-      content: "We accept returns for unused, undamaged non-perishable items (like electricals and steel) within 7 days. Cement bags once sold cannot be returned due to quality sensitivity."
+      title: "What are the shop timings to visit Sri Amman Electricals&Hardwares?",
+      content: "You can come here during Monday:- 9:00 am - 9:00 pm, Tuesday:- 9:00 am - 9:00 pm, Wednesday:- 9:00 am - 9:00 pm, Thursday:- 9:00 am - 9:00 pm, Friday:- 9:00 am - 9:00 pm, Saturday:- 9:00 am - 9:00 pm, Sunday:- 9:00 am - 9:00 pm."
+    },
+    {
+      title: "Can I return tools purchased from Sri Amman Electricals&Hardwares that are no longer being used by me?",
+      content: "Used articles cannot be returned. But, please check with the shop representative if they are willing to exchange it for a better one."
     }
   ];
 
@@ -48,9 +52,9 @@ export default function Contact() {
                       <div>
                         <h4 className="font-semibold text-slate-900">Visit Us</h4>
                         <p className="text-sm text-slate-600 mt-1">
-                          123 Industrial Estate,<br />
-                          Main Road, Chennai,<br />
-                          Tamil Nadu 600001
+                          551, Kunnathur Road, Perundurai West,<br />
+                          Perundurai-638052,<br />
+                          Tamil Nadu
                         </p>
                       </div>
                     </div>
@@ -62,7 +66,6 @@ export default function Contact() {
                       <div>
                         <h4 className="font-semibold text-slate-900">Call Us</h4>
                         <p className="text-sm text-slate-600 mt-1">+91 98765 43210</p>
-                        <p className="text-sm text-slate-600">+91 44 1234 5678</p>
                       </div>
                     </div>
 
@@ -83,8 +86,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-900">Working Hours</h4>
-                        <p className="text-sm text-slate-600 mt-1">Mon - Sat: 9:00 AM - 8:00 PM</p>
-                        <p className="text-sm text-slate-600">Sunday: Closed</p>
+                        <p className="text-sm text-slate-600 mt-1">Mon - Sun: 9:00 AM - 9:00 PM</p>
                       </div>
                     </div>
                   </div>
@@ -101,7 +103,7 @@ export default function Contact() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                        <input type="text" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="John Doe" />
+                        <input type="text" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Ravi" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
@@ -111,7 +113,7 @@ export default function Contact() {
                     
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                      <input type="email" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="john@example.com" />
+                      <input type="email" className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Ravi@example.com" />
                     </div>
 
                     <div>

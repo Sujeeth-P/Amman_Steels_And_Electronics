@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Carousel Section */}
-      <section className="relative h-[600px] bg-slate-900 overflow-hidden group">
+      <section className="relative h-[600px] min-h-screen bg-slate-900 overflow-hidden group">
         <AnimatePresence mode='wait'>
           <motion.div
             key={currentSlide}
@@ -69,7 +69,7 @@ export default function Home() {
         </AnimatePresence>
         
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
-          <div className="max-w-3xl text-white px-8 md:px-10 lg:px-12">
+          <div className="max-w-3xl text-white pl-8 md:px-10 lg:pl-12 ml-8 md:ml-10 lg:ml-14">
             <AnimatePresence mode='wait'>
               <motion.div
                 key={currentSlide}

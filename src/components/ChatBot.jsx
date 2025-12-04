@@ -13,11 +13,11 @@ const PREDEFINED_RESPONSES = {
     },
     {
       keys: ["delivery", "shipping", "transport", "deliver"],
-      response: "We offer delivery across Tamil Nadu. Free delivery is available for bulk orders above ₹50,000 within a 20km radius of Chennai."
+      response: "We offer delivery across Tamil Nadu. Free delivery is available for bulk orders above ₹10,000 within a 20km radius of Perundurai."
     },
     {
       keys: ["location", "address", "where", "shop"],
-      response: "We are located at 123 Industrial Estate, Main Road, Chennai, Tamil Nadu 600001. We are open Mon-Sat, 9 AM - 8 PM."
+      response: "551, Kunnathur Road, Perundurai West, Perundurai-638052, Tamil Nadu 638052. We are open Mon-Sat, 9 AM - 8 PM."
     },
     {
       keys: ["contact", "phone", "email", "call"],
@@ -142,7 +142,7 @@ export default function ChatBot() {
                 <Bot className="text-white" size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-white">Support Assistant</h3>
+                <h3 className="font-bold text-white">Zyvox AI</h3>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                   <span className="text-xs text-slate-300">Online</span>

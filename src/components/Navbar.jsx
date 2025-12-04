@@ -35,7 +35,9 @@ export default function Navbar() {
 
       {/* Main Nav */}
       <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center px-2 md:px-4 lg:px-6">
+        {/* <div className="flex justify-between items-center px-2 md:px-4 lg:px-6"> */}
+        <div className="flex items-center justify-between px-2 md:px-4 lg:px-6">
+
           {/* Logo */}
           <Link to="/" className="flex flex-col">
             <span className="text-2xl font-bold text-slate-900 tracking-tight">SRI AMMAN</span>
@@ -43,6 +45,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
+          <div className="flex items-center justify-end gap-8">
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => ( 
               <Link
@@ -77,6 +80,7 @@ export default function Navbar() {
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
+          </div>
           </div>
         </div>
       </div>
