@@ -69,7 +69,7 @@ export default function Home() {
         </AnimatePresence>
         
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
-          <div className="max-w-3xl text-white pl-8 md:px-10 lg:pl-12 ml-8 md:ml-10 lg:ml-14">
+          <div className="max-w-3xl text-white pl-8 md:px-8 lg:pl-12 ml-0 md:ml-6 lg:ml-14">
             <AnimatePresence mode='wait'>
               <motion.div
                 key={currentSlide}
