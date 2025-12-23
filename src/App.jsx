@@ -13,7 +13,7 @@ import ChatBot from './components/ChatBot';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ScrollToTop } from './components/ScrollToTop';
-import LoadingScreen from './components/LoadingScreen';
+// import LoadingScreen from './components/LoadingScreen';
 
 // Auth Components
 import SignIn from './pages/SignIn';
@@ -46,11 +46,11 @@ function CustomerLayout({ children }) {
 }
 
 function AppContent() {
-  const { loading } = useAuth();
+  // const { loading } = useAuth();
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  // if (loading) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <Router>

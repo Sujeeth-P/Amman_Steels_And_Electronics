@@ -26,9 +26,9 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 bg-blue-600 text-white">
+      <section className="py-10 bg-slate-900 text-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { value: 25, suffix: '+', label: 'Years of Experience' },
               { value: 5000, suffix: '+', label: 'Happy Customers' },
