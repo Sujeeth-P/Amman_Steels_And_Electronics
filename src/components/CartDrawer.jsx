@@ -4,21 +4,28 @@ import { X, Trash2, Send } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 export default function CartDrawer() {
-  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, setCart } = useCart(); // Added setCart if exposed, else need to verify context
+  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, setCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const handleRequestQuote = () => {
-    // Simulate API call
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      // Close cart drawer
+      setIsCartOpen(false);
+      // Navigate to sign in page with redirect back to cart
+      navigate('/signin', { state: { from: '/', message: 'Please sign in to request a quote' } });
+      return;
+    }
+
+    // If authenticated, proceed with quote request
     setTimeout(() => {
       setIsCartOpen(false);
-      // In a real app, we would clear the cart here using a clearCart function from context
-      // Since we didn't expose clearCart in the previous context file, we'll navigate first
-      // Ideally, we should add clearCart to context. 
-      // For now, assuming the user wants to see the success page.
       navigate('/enquiry-success');
     }, 300);
   };
@@ -27,14 +34,14 @@ export default function CartDrawer() {
     <AnimatePresence>
       {isCartOpen && (
         <>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsCartOpen(false)}
             className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
           />
-          <motion.div 
+          <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -55,7 +62,7 @@ export default function CartDrawer() {
                     <Send size={32} />
                   </div>
                   <p>Your enquiry list is empty</p>
-                  <button 
+                  <button
                     onClick={() => setIsCartOpen(false)}
                     className="text-blue-600 font-medium hover:underline"
                   >
@@ -73,21 +80,21 @@ export default function CartDrawer() {
                       <p className="text-sm text-slate-500 mb-2">{item.unit}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center border border-slate-200 rounded-md">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             className="px-3 py-1 hover:bg-slate-50 text-slate-600"
                           >
                             -
                           </button>
                           <span className="px-2 text-sm font-medium w-8 text-center">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="px-3 py-1 hover:bg-slate-50 text-slate-600"
                           >
                             +
                           </button>
                         </div>
-                        <button 
+                        <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-red-500 hover:text-red-600 p-1"
                         >
@@ -109,7 +116,7 @@ export default function CartDrawer() {
                 <p className="text-xs text-slate-500 mb-4">
                   *Final pricing may vary based on bulk quantity and location.
                 </p>
-                <button 
+                <button
                   onClick={handleRequestQuote}
                   className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                 >

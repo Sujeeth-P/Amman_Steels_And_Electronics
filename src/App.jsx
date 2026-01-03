@@ -13,6 +13,7 @@ import ChatBot from './components/ChatBot';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ScrollToTop } from './components/ScrollToTop';
+import ErrorBoundary from './components/ErrorBoundary';
 // import LoadingScreen from './components/LoadingScreen';
 
 // Auth Components
@@ -24,12 +25,6 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import Settings from './pages/Settings';
 
-// Admin Components
-import AdminLayout from './layouts/AdminLayout';
-import AdminLogin from './pages/admin/AdminLogin';
-import Dashboard from './pages/admin/Dashboard';
-import Enquiries from './pages/admin/Enquiries';
-import ProductList from './pages/admin/ProductList';
 
 function CustomerLayout({ children }) {
   return (
@@ -60,7 +55,7 @@ function AppContent() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Admin Routes */}
+        {/* Admin Routes */}{/*
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
@@ -68,7 +63,7 @@ function AppContent() {
           <Route path="enquiries" element={<Enquiries />} />
           <Route path="products" element={<ProductList />} />
           <Route path="settings" element={<div className="p-6">Settings Page (Coming Soon)</div>} />
-        </Route>
+        </Route> */}
 
         {/* Customer Routes */}
         <Route path="*" element={
@@ -93,11 +88,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <AppContent />
-      </CartProvider>
-    </AuthProvider>
+    <ErrorBoundary name="App">
+      <AuthProvider>
+        <CartProvider>
+          <AppContent />
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

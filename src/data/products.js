@@ -1,8 +1,26 @@
+import { PRODUCT_IMAGES, CATEGORY_IMAGES, getOptimized } from '../constants/images';
+
 export const categories = [
-  { id: 'steel', name: 'Steel & TMT', image: '/src/assets/3pole.png' },
-  { id: 'cement', name: 'Cement', image: '/src/assets/board.png' },
-  { id: 'electronics', name: 'Electronics & Electricals', image: '/src/assets/switch.png' },
-  { id: 'paints', name: 'Paints & Finishes', image: '/src/assets/syska.png' }
+  {
+    id: 'steel',
+    name: 'Steel & TMT',
+    image: getOptimized('tMTBarGrade550D', { width: 400, height: 300 }) || 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'cement',
+    name: 'Cement',
+    image: getOptimized('ultratechOPC53Grade', { width: 400, height: 300 }) || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'electronics',
+    name: 'Electronics & Electricals',
+    image: getOptimized('modularSwitchesSet', { width: 400, height: 300 }) || 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'paints',
+    name: 'Paints & Finishes',
+    image: getOptimized('co3', { width: 400, height: 300 }) || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=300&fit=crop'
+  }
 ];
 
 export const products = [
@@ -13,7 +31,7 @@ export const products = [
     category: 'steel',
     price: 65000,
     unit: 'Ton',
-    image: '/src/assets/3pole.png',
+    image: getOptimized('tMTBarGrade550D', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=500&h=400&fit=crop',
     description: 'High-strength TMT bars suitable for heavy construction. Earthquake resistant.',
     longDescription: 'Our Grade 550D TMT bars are manufactured using the latest Tempcore technology. They offer superior ductility, high strength, and excellent bendability, making them ideal for critical infrastructure projects, high-rise buildings, and bridges in seismic zones.',
     specs: {
@@ -47,7 +65,7 @@ export const products = [
     category: 'steel',
     price: 58,
     unit: 'Kg',
-    image: '/src/assets/anchor.png',
+    image: getOptimized('mSSquarePipes', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=500&h=400&fit=crop',
     description: 'Mild Steel square pipes for structural fabrication.',
     longDescription: 'Premium quality Mild Steel (MS) square pipes known for their durability and high tensile strength. Widely used in furniture, bus bodies, fencing, and general structural fabrication.',
     specs: {
@@ -67,7 +85,7 @@ export const products = [
     category: 'cement',
     price: 420,
     unit: 'Bag',
-    image: '/src/assets/board.png',
+    image: getOptimized('ultratechOPC53Grade', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=500&h=400&fit=crop',
     description: 'Ordinary Portland Cement for general construction purposes.',
     longDescription: 'OPC 53 Grade cement is a high-strength cement used for general civil engineering construction work, RCC works, pre-cast items such as blocks, tiles, pipes, and non-structural works such as plastering and flooring.',
     specs: {
@@ -94,7 +112,7 @@ export const products = [
     category: 'cement',
     price: 850,
     unit: 'Bag',
-    image: '/src/assets/goldmedal.png',
+    image: getOptimized('whiteCement', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&h=400&fit=crop',
     description: 'Premium white cement for decorative finishing.',
     longDescription: 'Superior quality white cement that provides a pristine white canvas for your walls. Ideal for terrazzo flooring, architectural concrete, and decorative cement paints.',
     specs: {
@@ -114,7 +132,7 @@ export const products = [
     category: 'electronics',
     price: 1200,
     unit: 'Box',
-    image: '/src/assets/switch.png',
+    image: getOptimized('modularSwitchesSet', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?w=500&h=400&fit=crop',
     description: 'Elegant modular switches, fire resistant.',
     longDescription: 'State-of-the-art modular switches designed for modern homes. Features soft-touch operation, flame-retardant polycarbonate material, and a sleek finish that complements any interior.',
     specs: {
@@ -133,7 +151,7 @@ export const products = [
     category: 'electronics',
     price: 1800,
     unit: 'Coil',
-    image: '/src/assets/motor.png',
+    image: getOptimized('copperWiring25mm', { width: 500, height: 400 }) || 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&h=400&fit=crop',
     description: 'Pure copper wiring for domestic and industrial use.',
     longDescription: 'High-conductivity electrolytic copper conductor with multi-strand flexibility. Insulated with advanced PVC compound for superior fire resistance and longevity.',
     specs: {

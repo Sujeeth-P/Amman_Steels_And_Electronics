@@ -11,7 +11,7 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  
+
   const product = products.find(p => p.id === id);
 
   if (!product) {
@@ -45,9 +45,9 @@ export default function ProductDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Image Section */}
             <div className="bg-slate-100 p-8 flex items-center justify-center min-h-[400px]">
-              <img 
-                src={product.image} 
-                alt={product.name} 
+              <img
+                src={product.image}
+                alt={product.name}
                 className="w-full max-w-md object-cover rounded-lg shadow-lg"
               />
             </div>
@@ -81,21 +81,21 @@ export default function ProductDetail() {
               {/* Quantity & Action */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <div className="flex items-center border border-slate-200 rounded-lg w-fit">
-                  <button 
+                  <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="px-4 py-3 hover:bg-slate-50 text-slate-600 transition-colors"
                   >
                     -
                   </button>
                   <span className="px-4 font-bold text-slate-900 w-12 text-center">{quantity}</span>
-                  <button 
+                  <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="px-4 py-3 hover:bg-slate-50 text-slate-600 transition-colors"
                   >
                     +
                   </button>
                 </div>
-                <button 
+                <button
                   onClick={handleAddToCart}
                   className="flex-1 bg-slate-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all shadow-lg shadow-blue-900/10"
                 >
@@ -139,7 +139,7 @@ export default function ProductDetail() {
 
         {/* Reviews Section */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 md:p-12">
-          <ReviewSection productId={product.id} initialReviews={product.reviews} />
+          <ReviewSection productId={product.id} />
         </div>
 
       </div>

@@ -27,7 +27,7 @@ export default function Footer() {
               <li><Link to="/products" className="hover:text-blue-400 transition-colors">Our Products</Link></li>
               <li><Link to="/about" className="hover:text-blue-400 transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="hover:text-blue-400 transition-colors">Contact Support</Link></li>
-              <li><Link to="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+              {/* <li><Link to="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li> */}
             </ul>
           </div>
 
@@ -35,7 +35,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-6">Services</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/products?cat=hardware" className="hover:text-blue-400 transition-colors">Hardware Shops</Link></li>
+              <li><Link to="/products" className="hover:text-blue-400 transition-colors">Hardware Shops</Link></li>
               <li><Link to="/products?cat=pipes" className="hover:text-blue-400 transition-colors">Pipe Dealers</Link></li>
               <li><Link to="/products?cat=drills" className="hover:text-blue-400 transition-colors">Drill Dealers</Link></li>
               <li><Link to="/products?cat=electronics" className="hover:text-blue-400 transition-colors">Electronics</Link></li>

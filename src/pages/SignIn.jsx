@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -12,8 +12,17 @@ export default function SignIn() {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [infoMessage, setInfoMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
     const { login } = useAuth();
+
+    // Check if there's a message from redirect (e.g., from request quote)
+    useEffect(() => {
+        if (location.state?.message) {
+            setInfoMessage(location.state.message);
+        }
+    }, [location]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,7 +47,9 @@ export default function SignIn() {
 
             if (data.success) {
                 login(data.user, data.token);
-                navigate('/');
+                // Redirect to the page they came from, or home
+                const redirectTo = location.state?.from || '/';
+                navigate(redirectTo);
             } else {
                 setError(data.message || 'Invalid credentials');
             }
@@ -85,6 +96,16 @@ export default function SignIn() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-5">
+                            {infoMessage && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm p-4 rounded-xl text-center"
+                                >
+                                    {infoMessage}
+                                </motion.div>
+                            )}
+
                             {error && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -10 }}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Truck, Package, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Truck, Package, Eye, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { categories, products } from '../data/products';
+import { categories } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../lib/utils';
 import FadeIn from '../components/ui/FadeIn';
+import { HERO_IMAGES } from '../constants/images';
 
 const heroSlides = [
   {
@@ -24,7 +26,7 @@ const heroSlides = [
   },
   {
     id: 3,
-    image: "/src/assets/co3.jpg",
+    image: HERO_IMAGES.construction,
     title: "Powering Your World Safely",
     subtitle: "From industrial wiring to modular switches, get ISI marked electrical components for complete peace of mind.",
     cta: "Explore Electronics"
@@ -33,6 +35,7 @@ const heroSlides = [
 
 export default function Home() {
   const { addToCart } = useCart();
+  const { products, loading, error } = useProducts();
   const featuredProducts = products.slice(0, 4);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -59,17 +62,17 @@ export default function Home() {
             transition={{ duration: 0.7 }}
             className="absolute inset-0 z-0"
           >
-            <img 
-              src={heroSlides[currentSlide].image} 
-              alt="Hero Background" 
+            <img
+              src={heroSlides[currentSlide].image}
+              alt="Hero Background"
               className="w-full h-full object-cover opacity-50"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent" />
           </motion.div>
         </AnimatePresence>
-        
+
         <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
-          <div className="max-w-3xl text-white pl-8 md:px-8 lg:pl-12 ml-0 md:ml-6 lg:ml-14">
+          <div className="max-w-3xl lg:min-h-[55vh] text-white pl-6 md:px-4 lg:pl-12 ml-1 md:ml-6 lg:ml-12">
             <AnimatePresence mode='wait'>
               <motion.div
                 key={currentSlide}
@@ -87,15 +90,15 @@ export default function Home() {
                   {heroSlides[currentSlide].subtitle}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Link 
-                    to="/products" 
-                    className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all flex items-center gap-2"
+                  <Link
+                    to="/products"
+                    className="mt-4 bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all flex items-center gap-2"
                   >
                     {heroSlides[currentSlide].cta} <ArrowRight size={20} />
                   </Link>
-                  <Link 
-                    to="/contact" 
-                    className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/20 transition-all"
+                  <Link
+                    to="/contact"
+                    className="mt-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/20 transition-all"
                   >
                     Bulk Enquiry
                   </Link>
@@ -111,20 +114,19 @@ export default function Home() {
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                currentSlide === idx ? "w-8 bg-blue-500" : "w-2 bg-white/30 hover:bg-white/50"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === idx ? "w-8 bg-blue-500" : "w-2 bg-white/30 hover:bg-white/50"
+                }`}
             />
           ))}
         </div>
 
-        <button 
+        <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/50 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
         >
           <ChevronLeft size={32} />
         </button>
-        <button 
+        <button
           onClick={nextSlide}
           className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/50 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
         >
@@ -135,7 +137,7 @@ export default function Home() {
       {/* Features */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center">
             {[
               { icon: ShieldCheck, title: 'Quality Assured', desc: '100% authentic products from top brands like Tata, UltraTech, and more.' },
               // { icon: Truck, title: 'Fast Delivery', desc: 'Efficient logistics network ensuring timely delivery to your construction site.' },
@@ -169,17 +171,17 @@ export default function Home() {
               </Link>
             </div>
           </FadeIn>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((cat, idx) => (
               <FadeIn key={cat.id} delay={idx * 0.1} direction="up">
-                <Link 
+                <Link
                   to={`/products?cat=${cat.id}`}
                   className="group relative h-64 rounded-xl overflow-hidden cursor-pointer block shadow-md hover:shadow-xl transition-shadow"
                 >
-                  <img 
-                    src={cat.image} 
-                    alt={cat.name} 
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -202,47 +204,64 @@ export default function Home() {
           <FadeIn>
             <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Featured Products</h2>
           </FadeIn>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product, idx) => (
-              <FadeIn key={product.id} delay={idx * 0.1} direction="up">
-                <div className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:-translate-y-1">
-                  <Link to={`/products/${product.id}`} className="relative h-48 overflow-hidden bg-slate-100 block">
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-900 shadow-sm z-10">
-                      {product.category.toUpperCase()}
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span className="bg-white/90 backdrop-blur text-slate-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <Eye size={14} /> View
-                      </span>
-                    </div>
-                  </Link>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <Link to={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
-                      <h3 className="font-bold text-lg text-slate-900 mb-1 line-clamp-1">{product.name}</h3>
-                    </Link>
-                    <p className="text-slate-500 text-sm mb-4 line-clamp-2">{product.description}</p>
-                    <div className="flex items-center justify-between mt-auto">
-                      <div>
-                        <span className="text-lg font-bold text-blue-600">{formatCurrency(product.price)}</span>
-                        <span className="text-xs text-slate-500"> / {product.unit}</span>
+
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="animate-spin text-blue-600" size={48} />
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-500 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map((product, idx) => (
+                <FadeIn key={product.id} delay={idx * 0.1} direction="up">
+                  <div className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:-translate-y-1">
+                    <Link to={`/products/${product.id}`} className="relative h-48 overflow-hidden bg-slate-100 block">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-slate-900 shadow-sm z-10">
+                        {product.category.toUpperCase()}
                       </div>
-                      <button 
-                        onClick={() => addToCart(product)}
-                        className="bg-slate-900 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
-                      >
-                        <ArrowRight size={18} />
-                      </button>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="bg-white/90 backdrop-blur text-slate-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                          <Eye size={14} /> View
+                        </span>
+                      </div>
+                    </Link>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <Link to={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
+                        <h3 className="font-bold text-lg text-slate-900 mb-1 line-clamp-1">{product.name}</h3>
+                      </Link>
+                      <p className="text-slate-500 text-sm mb-4 line-clamp-2">{product.description}</p>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div>
+                          <span className="text-lg font-bold text-blue-600">{formatCurrency(product.price)}</span>
+                          <span className="text-xs text-slate-500"> / {product.unit}</span>
+                        </div>
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="bg-slate-900 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors"
+                        >
+                          <ArrowRight size={18} />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+                </FadeIn>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

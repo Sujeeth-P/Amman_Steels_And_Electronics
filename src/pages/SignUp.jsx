@@ -16,16 +16,65 @@ export default function SignUp() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
     const { login } = useAuth();
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
         setError('');
+
+        // Real-time validation for name field
+        if (name === 'name') {
+            if (!value.trim()) {
+                setNameError('Name is required');
+            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+                setNameError('Name should contain only letters and spaces');
+            } else if (value.trim().length < 2) {
+                setNameError('Name must be at least 2 characters');
+            } else {
+                setNameError('');
+            }
+        }
+
+        // Real-time validation for phone field
+        if (name === 'phone') {
+            if (value && value.trim()) {
+                // Check if contains only digits
+                if (!/^\d*$/.test(value)) {
+                    setPhoneError('Phone number should contain only digits');
+                } else if (value.length > 0 && value.length < 10) {
+                    setPhoneError('Phone number must be 10 digits');
+                } else if (value.length === 10 && !/^[6-9]\d{9}$/.test(value)) {
+                    setPhoneError('Phone number must start with 6, 7, 8, or 9');
+                } else if (value.length === 10) {
+                    setPhoneError('');
+                } else {
+                    setPhoneError('');
+                }
+            } else {
+                setPhoneError('');
+            }
+        }
     };
 
     const validateForm = () => {
+        // Validate name - must be a string with letters and spaces only
+        if (!formData.name.trim()) {
+            setError('Name is required');
+            return false;
+        }
+        if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+            setError('Name should contain only letters and spaces');
+            return false;
+        }
+        if (formData.name.trim().length < 2) {
+            setError('Name must be at least 2 characters');
+            return false;
+        }
         if (formData.password.length < 6) {
             setError('Password must be at least 6 characters');
             return false;
@@ -187,11 +236,28 @@ export default function SignUp() {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 outline-none transition-all"
+                                        className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border ${nameError
+                                            ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50'
+                                            : formData.name && !nameError
+                                                ? 'border-green-500/50 focus:ring-green-500/50 focus:border-green-500/50'
+                                                : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500/50'
+                                            } text-white placeholder-slate-500 focus:ring-2 outline-none transition-all`}
                                         placeholder="Enter your full name"
                                         required
                                     />
+                                    {formData.name && !nameError && (
+                                        <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400" size={20} />
+                                    )}
                                 </div>
+                                {nameError && (
+                                    <motion.p
+                                        initial={{ opacity: 0, y: -5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-red-400 text-xs mt-1.5 ml-1"
+                                    >
+                                        {nameError}
+                                    </motion.p>
+                                )}
                             </div>
 
                             {/* Email Field */}
@@ -223,11 +289,28 @@ export default function SignUp() {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
-                                        className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 outline-none transition-all"
+                                        className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border ${phoneError
+                                                ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50'
+                                                : formData.phone && !phoneError && formData.phone.length === 10
+                                                    ? 'border-green-500/50 focus:ring-green-500/50 focus:border-green-500/50'
+                                                    : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500/50'
+                                            } text-white placeholder-slate-500 focus:ring-2 outline-none transition-all`}
                                         placeholder="Enter your phone number"
                                         maxLength={10}
                                     />
+                                    {formData.phone && !phoneError && formData.phone.length === 10 && (
+                                        <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 text-green-400" size={20} />
+                                    )}
                                 </div>
+                                {phoneError && (
+                                    <motion.p
+                                        initial={{ opacity: 0, y: -5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-red-400 text-xs mt-1.5 ml-1"
+                                    >
+                                        {phoneError}
+                                    </motion.p>
+                                )}
                             </div>
 
                             {/* Password Field */}
