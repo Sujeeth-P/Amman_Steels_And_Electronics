@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import GoogleAuthButton from '../components/GoogleAuthButton';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({
@@ -182,12 +183,15 @@ export default function SignIn() {
                         {/* Divider */}
                         <div className="flex items-center gap-4 my-6">
                             <div className="flex-1 h-px bg-white/10" />
-                            <span className="text-slate-500 text-sm">or</span>
+                            <span className="text-slate-500 text-sm">or continue with</span>
                             <div className="flex-1 h-px bg-white/10" />
                         </div>
 
+                        {/* Google Sign In */}
+                        <GoogleAuthButton mode="signin" />
+
                         {/* Sign Up Link */}
-                        <p className="text-center text-slate-400">
+                        <p className="text-center text-slate-400 mt-6">
                             Don't have an account?{' '}
                             <Link to="/signup" className="text-blue-400 font-semibold hover:text-blue-300 transition-colors">
                                 Create an account

@@ -79,9 +79,18 @@ export default function UserAvatar({ className = '' }) {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition-colors group"
             >
-                <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${avatarColor} flex items-center justify-center text-white font-semibold text-sm shadow-lg ring-2 ring-white`}>
-                    {initials}
-                </div>
+                {user.avatar ? (
+                    <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className="w-9 h-9 rounded-full shadow-lg ring-2 ring-white object-cover"
+                        referrerPolicy="no-referrer"
+                    />
+                ) : (
+                    <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${avatarColor} flex items-center justify-center text-white font-semibold text-sm shadow-lg ring-2 ring-white`}>
+                        {initials}
+                    </div>
+                )}
                 <ChevronDown
                     size={16}
                     className={`text-slate-400 hidden sm:block transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -101,9 +110,18 @@ export default function UserAvatar({ className = '' }) {
                         {/* User Info Header */}
                         <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 border-b border-slate-100">
                             <div className="flex items-center gap-3">
-                                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${avatarColor} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
-                                    {initials}
-                                </div>
+                                {user.avatar ? (
+                                    <img
+                                        src={user.avatar}
+                                        alt={user.name}
+                                        className="w-12 h-12 rounded-full shadow-lg object-cover"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                ) : (
+                                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${avatarColor} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                                        {initials}
+                                    </div>
+                                )}
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-slate-900 truncate">{user.name}</p>
                                     <p className="text-sm text-slate-500 truncate">{user.email}</p>
@@ -130,7 +148,7 @@ export default function UserAvatar({ className = '' }) {
                                 <ShoppingBag size={18} />
                                 <span className="text-sm font-medium">My Orders</span>
                             </Link>
-{/* 
+                            {/* 
                             <Link
                                 to="/settings"
                                 onClick={() => setIsOpen(false)}

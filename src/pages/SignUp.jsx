@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, User, Phone, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import GoogleAuthButton from '../components/GoogleAuthButton';
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -280,7 +281,7 @@ export default function SignUp() {
                             {/* Phone Field */}
                             <div>
                                 <label className="block text-sm font-medium text-slate-300 mb-2">
-                                    Phone Number <span className="text-slate-500">(Optional)</span>
+                                    Phone Number <span className="text-slate-500"></span>
                                 </label>
                                 <div className="relative">
                                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -290,10 +291,10 @@ export default function SignUp() {
                                         value={formData.phone}
                                         onChange={handleChange}
                                         className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border ${phoneError
-                                                ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50'
-                                                : formData.phone && !phoneError && formData.phone.length === 10
-                                                    ? 'border-green-500/50 focus:ring-green-500/50 focus:border-green-500/50'
-                                                    : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500/50'
+                                            ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50'
+                                            : formData.phone && !phoneError && formData.phone.length === 10
+                                                ? 'border-green-500/50 focus:ring-green-500/50 focus:border-green-500/50'
+                                                : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500/50'
                                             } text-white placeholder-slate-500 focus:ring-2 outline-none transition-all`}
                                         placeholder="Enter your phone number"
                                         maxLength={10}
@@ -401,14 +402,19 @@ export default function SignUp() {
                         </form>
 
                         {/* Divider */}
-                        <div className="flex items-center gap-4 my-6">
+                        <div className="flex items-center gap-4 mt-8 mb-6">
                             <div className="flex-1 h-px bg-white/10" />
-                            <span className="text-slate-500 text-sm">or</span>
+                            <span className="text-slate-500 text-sm">or continue with</span>
                             <div className="flex-1 h-px bg-white/10" />
                         </div>
 
+                        {/* Google Sign Up */}
+                        <div className="w-full py-3 px-4">
+                            <GoogleAuthButton mode="signup" />
+                        </div>
+
                         {/* Sign In Link */}
-                        <p className="text-center text-slate-400">
+                        <p className="text-center text-slate-400 mt-6">
                             Already have an account?{' '}
                             <Link to="/signin" className="text-blue-400 font-semibold hover:text-blue-300 transition-colors">
                                 Sign in

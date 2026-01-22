@@ -1,23 +1,63 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Check, Shield, Truck, Package } from 'lucide-react';
-import { products } from '../data/products';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { ArrowLeft, Check, Shield, Package, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { formatCurrency, cn } from '../lib/utils';
+import { formatCurrency } from '../lib/utils';
 import ReviewSection from '../components/ReviewSection';
+import axios from 'axios';
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const product = products.find(p => p.id === id);
+  // Fetch product details from API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  if (!product) {
+        const response = await axios.get(`/api/products/${id}`);
+
+        if (response.data.success) {
+          setProduct(response.data.data);
+        } else {
+          setError('Product not found');
+        }
+      } catch (err) {
+        console.error('Error fetching product:', err);
+        if (err.response?.status === 404) {
+          setError('Product not found');
+        } else {
+          setError('Failed to load product details');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  // Loading state
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">Product Not Found</h2>
+        <Loader2 size={48} className="text-blue-600 animate-spin mb-4" />
+        <p className="text-slate-600">Loading product details...</p>
+      </div>
+    );
+  }
+
+  // Error or not found state
+  if (error || !product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">{error || 'Product Not Found'}</h2>
         <Link to="/products" className="text-blue-600 hover:underline flex items-center gap-2">
           <ArrowLeft size={20} /> Back to Catalogue
         </Link>
@@ -27,6 +67,17 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+  };
+
+  // Format category name for display
+  const getCategoryDisplayName = (category) => {
+    const categoryNames = {
+      'steel': 'Steel & TMT',
+      'cement': 'Cement',
+      'electronics': 'Electronics & Electricals',
+      'paints': 'Paints & Finishes'
+    };
+    return categoryNames[category?.toLowerCase()] || category;
   };
 
   return (
@@ -46,9 +97,10 @@ export default function ProductDetail() {
             {/* Image Section */}
             <div className="bg-slate-100 p-8 flex items-center justify-center min-h-[400px]">
               <img
-                src={product.image}
+                src={product.image || 'https://via.placeholder.com/400'}
                 alt={product.name}
                 className="w-full max-w-md object-cover rounded-lg shadow-lg"
+                onError={(e) => { e.target.src = 'https://via.placeholder.com/400'; }}
               />
             </div>
 
@@ -56,7 +108,7 @@ export default function ProductDetail() {
             <div className="p-8 md:p-12">
               <div className="mb-6">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide rounded-full mb-4">
-                  {product.category}
+                  {getCategoryDisplayName(product.category)}
                 </span>
                 <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{product.name}</h1>
                 <p className="text-slate-600 leading-relaxed text-lg">
@@ -74,7 +126,7 @@ export default function ProductDetail() {
                     <Check size={14} /> In Stock
                   </span>
                 ) : (
-                  <span className="text-red-500 text-sm font-medium">Out of Stock</span>
+                  <span className="text-red-500 text-sm font-medium bg-red-50 px-2 py-1 rounded">Out of Stock</span>
                 )}
               </div>
 
@@ -97,9 +149,13 @@ export default function ProductDetail() {
                 </div>
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-slate-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all shadow-lg shadow-blue-900/10"
+                  disabled={!product.inStock}
+                  className={`flex-1 px-8 py-3 rounded-lg font-semibold transition-all shadow-lg ${product.inStock
+                      ? 'bg-slate-900 text-white hover:bg-blue-600 shadow-blue-900/10'
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                    }`}
                 >
-                  Add to Enquiry List
+                  {product.inStock ? 'Add to Enquiry List' : 'Out of Stock'}
                 </button>
               </div>
 
@@ -109,10 +165,6 @@ export default function ProductDetail() {
                   <Shield size={18} className="text-blue-500" />
                   <span>Quality Assured</span>
                 </div>
-                {/* <div className="flex items-center gap-3 text-sm text-slate-600">
-                  <Truck size={18} className="text-blue-500" />
-                  <span>Fast Delivery</span>
-                </div> */}
                 <div className="flex items-center gap-3 text-sm text-slate-600">
                   <Package size={18} className="text-blue-500" />
                   <span>Bulk Available</span>
@@ -120,7 +172,7 @@ export default function ProductDetail() {
               </div>
 
               {/* Specs */}
-              {product.specs && (
+              {product.specs && Object.keys(product.specs).length > 0 && (
                 <div>
                   <h3 className="font-bold text-slate-900 mb-4">Specifications</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-8">
