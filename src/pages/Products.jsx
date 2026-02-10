@@ -10,7 +10,8 @@ const categories = [
   { id: 'steel', name: 'Steel & TMT' },
   { id: 'cement', name: 'Cement' },
   { id: 'electronics', name: 'Electronics & Electricals' },
-  { id: 'paints', name: 'Paints & Finishes' }
+  { id: 'paints', name: 'Paints & Finishes' },
+  { id: 'pipes', name: 'Pipes & Plumbing' }
 ];
 
 export default function Products() {

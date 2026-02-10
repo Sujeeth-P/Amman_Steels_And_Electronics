@@ -75,7 +75,8 @@ export default function ProductDetail() {
       'steel': 'Steel & TMT',
       'cement': 'Cement',
       'electronics': 'Electronics & Electricals',
-      'paints': 'Paints & Finishes'
+      'paints': 'Paints & Finishes',
+      'pipes': 'Pipes & Plumbing'
     };
     return categoryNames[category?.toLowerCase()] || category;
   };
@@ -151,8 +152,8 @@ export default function ProductDetail() {
                   onClick={handleAddToCart}
                   disabled={!product.inStock}
                   className={`flex-1 px-8 py-3 rounded-lg font-semibold transition-all shadow-lg ${product.inStock
-                      ? 'bg-slate-900 text-white hover:bg-blue-600 shadow-blue-900/10'
-                      : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                    ? 'bg-slate-900 text-white hover:bg-blue-600 shadow-blue-900/10'
+                    : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     }`}
                 >
                   {product.inStock ? 'Add to Enquiry List' : 'Out of Stock'}

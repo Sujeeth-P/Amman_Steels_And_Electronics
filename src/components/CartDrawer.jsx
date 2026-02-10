@@ -1,33 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Trash2, Send } from 'lucide-react';
+import { X, Trash2, Send, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 
 export default function CartDrawer() {
-  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, setCart } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleRequestQuote = () => {
+  const handleRequestQuote = async () => {
     // Check if user is authenticated
     if (!isAuthenticated) {
-      // Close cart drawer
       setIsCartOpen(false);
-      // Navigate to sign in page with redirect back to cart
       navigate('/signin', { state: { from: '/', message: 'Please sign in to request a quote' } });
       return;
     }
 
-    // If authenticated, proceed with quote request
-    setTimeout(() => {
-      setIsCartOpen(false);
-      navigate('/enquiry-success');
-    }, 300);
+    // Check if cart has items
+    if (cart.length === 0) {
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      // Prepare enquiry data
+      const enquiryData = {
+        customer: {
+          name: user?.name || user?.email || 'Customer',
+          email: user?.email || '',
+          phone: user?.phone || ''
+        },
+        items: cart.map(item => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          unit: item.unit,
+          image: item.image
+        })),
+        source: 'cart'
+      };
+
+      // Get token from localStorage
+      const token = localStorage.getItem('token');
+
+      // Submit enquiry to backend
+      const response = await axios.post('/api/enquiries', enquiryData, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+
+      if (response.data.success) {
+        // Clear cart after successful submission
+        clearCart();
+        setIsCartOpen(false);
+        navigate('/enquiry-success');
+      }
+    } catch (error) {
+      console.error('Failed to submit enquiry:', error);
+      alert('Failed to submit enquiry. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -118,9 +159,21 @@ export default function CartDrawer() {
                 </p>
                 <button
                   onClick={handleRequestQuote}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className={`w-full py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2 ${submitting
+                    ? 'bg-blue-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700'
+                    } text-white`}
                 >
-                  Request Quote <Send size={18} />
+                  {submitting ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" /> Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Request Quote <Send size={18} />
+                    </>
+                  )}
                 </button>
               </div>
             )}

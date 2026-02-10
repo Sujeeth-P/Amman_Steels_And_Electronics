@@ -20,6 +20,11 @@ export const categories = [
     id: 'paints',
     name: 'Paints & Finishes',
     image: getOptimized('co3', { width: 400, height: 300 }) || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=300&fit=crop'
+  },
+  {
+    id: 'pipes',
+    name: 'Pipes & Plumbing',
+    image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&h=300&fit=crop'
   }
 ];
 

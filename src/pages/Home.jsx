@@ -120,7 +120,7 @@ export default function Home() {
           ))}
         </div>
 
-        <button
+        {/* <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/50 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
         >
@@ -131,7 +131,7 @@ export default function Home() {
           className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white/50 hover:bg-black/40 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-20"
         >
           <ChevronRight size={32} />
-        </button>
+        </button> */}
       </section>
 
       {/* Features */}
