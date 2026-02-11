@@ -37,7 +37,7 @@ export default function Products() {
           params.append('category', activeCategory);
         }
 
-        const response = await axios.get(`/api/products?${params.toString()}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products?${params.toString()}`);
 
         if (response.data.success) {
           setProducts(response.data.data);
