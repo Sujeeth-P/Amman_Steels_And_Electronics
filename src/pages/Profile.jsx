@@ -53,7 +53,7 @@ export default function Profile() {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/auth/update-profile', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/update-profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 
@@ -36,7 +37,7 @@ export default function SignIn() {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/signin', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,6 +49,7 @@ export default function SignIn() {
 
             if (data.success) {
                 login(data.user, data.token);
+                toast.success(`Welcome back, ${data.user.name || 'User'}! 👋`);
                 // Redirect to the page they came from, or home
                 const redirectTo = location.state?.from || '/';
                 navigate(redirectTo);

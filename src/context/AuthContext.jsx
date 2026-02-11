@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
             if (token && storedUser) {
                 // Verify token with backend
-                const response = await fetch('http://localhost:5000/api/auth/me', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

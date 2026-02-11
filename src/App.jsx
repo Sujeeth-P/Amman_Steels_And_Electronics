@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -41,6 +42,7 @@ function CustomerLayout({ children }) {
 }
 
 function AppContent() {
+  console.log('📌 Current Origin:', window.location.origin);
   // const { loading } = useAuth();
 
   // if (loading) {
@@ -91,6 +93,7 @@ function App() {
     <ErrorBoundary name="App">
       <AuthProvider>
         <CartProvider>
+          <Toaster position="top-center" toastOptions={{ duration: 3000, style: { background: '#1e293b', color: '#f1f5f9', borderRadius: '12px' } }} />
           <AppContent />
         </CartProvider>
       </AuthProvider>

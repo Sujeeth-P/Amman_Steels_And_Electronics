@@ -3,7 +3,7 @@ import { Star, User, Send, ThumbsUp, Edit2, Trash2, AlertCircle, Loader2 } from 
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
 export default function ReviewSection({ productId }) {
   const { user, isAuthenticated } = useAuth();
