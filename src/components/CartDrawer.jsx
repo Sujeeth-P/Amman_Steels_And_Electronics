@@ -53,7 +53,7 @@ export default function CartDrawer() {
       const token = localStorage.getItem('token');
 
       // Submit enquiry to backend
-      const response = await axios.post('/api/enquiries', enquiryData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries`, enquiryData, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 

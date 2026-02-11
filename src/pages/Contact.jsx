@@ -57,7 +57,7 @@ export default function Contact() {
     setError('');
 
     try {
-      const response = await axios.post('/api/enquiries', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/enquiries`, {
         customer: {
           name: formData.name,
           email: formData.email,
@@ -227,8 +227,8 @@ export default function Contact() {
                         type="submit"
                         disabled={submitting}
                         className={`px-8 py-3 rounded-lg font-semibold transition-colors w-full md:w-auto flex items-center justify-center gap-2 ${submitting
-                            ? 'bg-blue-400 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700'
+                          ? 'bg-blue-400 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700'
                           } text-white`}
                       >
                         {submitting ? (
