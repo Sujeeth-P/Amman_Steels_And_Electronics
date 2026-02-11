@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { User, LogOut, Settings, ShoppingBag, ChevronDown } from 'lucide-react';
+import { User, LogOut, Settings, Send, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
@@ -145,8 +145,8 @@ export default function UserAvatar({ className = '' }) {
                                 onClick={() => setIsOpen(false)}
                                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                             >
-                                <ShoppingBag size={18} />
-                                <span className="text-sm font-medium">My Orders</span>
+                                <Send size={18} />
+                                <span className="text-sm font-medium">My Enquiries</span>
                             </Link>
                             {/* 
                             <Link

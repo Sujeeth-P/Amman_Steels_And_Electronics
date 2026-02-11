@@ -164,7 +164,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium text-slate-600 py-3 px-2 border-b border-slate-50 hover:bg-slate-50 rounded-lg transition-colors"
                 >
-                  My Orders
+                  My Enquiries
                 </Link>
                 <button
                   onClick={() => {
