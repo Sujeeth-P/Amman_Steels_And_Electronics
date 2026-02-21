@@ -199,7 +199,7 @@ export default function Products() {
                               : "bg-slate-200 text-slate-400 cursor-not-allowed"
                           )}
                         >
-                          {product.inStock ? 'Add' : 'Unavailable'}
+                          {product.inStock ? 'Add' : 'Out of Stock'}
                         </button>
                       </div>
                     </div>
