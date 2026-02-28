@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, Filter, Eye, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -25,35 +25,48 @@ export default function Products() {
   const activeCategory = searchParams.get('cat') || 'all';
 
   // Fetch products from API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchProducts = useCallback(async (showLoader = false) => {
+    try {
+      if (showLoader) setLoading(true);
+      setError(null);
 
-        // Build query params
-        const params = new URLSearchParams();
-        if (activeCategory !== 'all') {
-          params.append('category', activeCategory);
-        }
-
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products?${params.toString()}`);
-
-        if (response.data.success) {
-          setProducts(response.data.data);
-        } else {
-          setError('Failed to load products');
-        }
-      } catch (err) {
-        console.error('Error fetching products:', err);
-        setError('Failed to load products. Please try again.');
-      } finally {
-        setLoading(false);
+      const params = new URLSearchParams();
+      if (activeCategory !== 'all') {
+        params.append('category', activeCategory);
       }
-    };
 
-    fetchProducts();
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products?${params.toString()}`);
+
+      if (response.data.success) {
+        setProducts(response.data.data);
+      } else {
+        setError('Failed to load products');
+      }
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      if (showLoader) setError('Failed to load products. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }, [activeCategory]);
+
+  // Initial fetch and when category changes
+  useEffect(() => {
+    fetchProducts(true);
+  }, [fetchProducts]);
+
+  // Auto-refresh stock every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => fetchProducts(false), 30000);
+    return () => clearInterval(interval);
+  }, [fetchProducts]);
+
+  // Refresh when tab regains focus (e.g., after admin does billing)
+  useEffect(() => {
+    const handleFocus = () => fetchProducts(false);
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [fetchProducts]);
 
   // Filter products by search (client-side for quick response)
   const filteredProducts = useMemo(() => {
@@ -164,12 +177,27 @@ export default function Products() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={(e) => { e.target.src = 'https://via.placeholder.com/300'; }}
                       />
-                      {/* Stock Badge */}
+                      {/* Stock Badge with Quantity */}
                       <div className={cn(
-                        "absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium",
-                        product.inStock ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                        "absolute top-3 right-3 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm backdrop-blur-sm",
+                        (product.stockQuantity || 0) > (product.lowStockThreshold || 100)
+                          ? "bg-green-100/90 text-green-700 border border-green-200"
+                          : (product.stockQuantity || 0) > 0
+                            ? "bg-amber-100/90 text-amber-700 border border-amber-200"
+                            : "bg-red-100/90 text-red-700 border border-red-200"
                       )}>
-                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                        <span className={cn(
+                          "w-2 h-2 rounded-full",
+                          (product.stockQuantity || 0) > (product.lowStockThreshold || 100)
+                            ? "bg-green-500"
+                            : (product.stockQuantity || 0) > 0
+                              ? "bg-amber-500 animate-pulse"
+                              : "bg-red-500"
+                        )} />
+                        {(product.stockQuantity || 0) > 0
+                          ? `${product.stockQuantity} ${product.unit || 'units'}`
+                          : 'Out of Stock'
+                        }
                       </div>
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                         <span className="bg-white/90 backdrop-blur text-slate-900 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform">
@@ -191,15 +219,15 @@ export default function Products() {
                         </div>
                         <button
                           onClick={() => addToCart(product)}
-                          disabled={!product.inStock}
+                          disabled={(product.stockQuantity || 0) <= 0}
                           className={cn(
                             "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                            product.inStock
+                            (product.stockQuantity || 0) > 0
                               ? "bg-blue-600 text-white hover:bg-blue-700"
                               : "bg-slate-200 text-slate-400 cursor-not-allowed"
                           )}
                         >
-                          {product.inStock ? 'Add' : 'Out of Stock'}
+                          {(product.stockQuantity || 0) > 0 ? 'Add' : 'Out of Stock'}
                         </button>
                       </div>
                     </div>

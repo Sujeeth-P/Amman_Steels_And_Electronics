@@ -117,19 +117,26 @@ export default function ProductDetail() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-6 mb-8 pb-8 border-b border-slate-100">
+              <div className="flex items-center gap-6 mb-6 pb-6 border-b border-slate-100">
                 <div>
                   <span className="text-3xl font-bold text-blue-600">{formatCurrency(product.price)}</span>
                   <span className="text-slate-500 ml-2">/ {product.unit}</span>
                 </div>
-                {product.inStock ? (
-                  <span className="flex items-center gap-1 text-green-600 text-sm font-medium bg-green-50 px-2 py-1 rounded">
-                    <Check size={14} /> In Stock
+                {(product.stockQuantity || 0) > (product.lowStockThreshold || 100) ? (
+                  <span className="flex items-center gap-1.5 text-green-600 text-sm font-bold bg-green-50 px-4 py-2 rounded-full border border-green-200">
+                    <Check size={14} /> {product.stockQuantity} {product.unit} available
+                  </span>
+                ) : (product.stockQuantity || 0) > 0 ? (
+                  <span className="flex items-center gap-1.5 text-amber-600 text-sm font-bold bg-amber-50 px-4 py-2 rounded-full border border-amber-200">
+                    ⚠️ Only {product.stockQuantity} {product.unit} left
                   </span>
                 ) : (
-                  <span className="text-red-500 text-sm font-medium bg-red-50 px-2 py-1 rounded">Out of Stock</span>
+                  <span className="flex items-center gap-1.5 text-red-500 text-sm font-bold bg-red-50 px-4 py-2 rounded-full border border-red-200">
+                    🚫 Out of Stock
+                  </span>
                 )}
               </div>
+
 
               {/* Quantity & Action */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -150,13 +157,13 @@ export default function ProductDetail() {
                 </div>
                 <button
                   onClick={handleAddToCart}
-                  disabled={!product.inStock}
-                  className={`flex-1 px-8 py-3 rounded-lg font-semibold transition-all shadow-lg ${product.inStock
+                  disabled={(product.stockQuantity || 0) <= 0}
+                  className={`flex-1 px-8 py-3 rounded-lg font-semibold transition-all shadow-lg ${(product.stockQuantity || 0) > 0
                     ? 'bg-slate-900 text-white hover:bg-blue-600 shadow-blue-900/10'
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     }`}
                 >
-                  {product.inStock ? 'Add to Enquiry List' : 'Out of Stock'}
+                  {(product.stockQuantity || 0) > 0 ? 'Add to Enquiry List' : 'Out of Stock'}
                 </button>
               </div>
 
