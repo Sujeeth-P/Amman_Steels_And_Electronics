@@ -65,7 +65,9 @@ export default function CartDrawer() {
       }
     } catch (error) {
       console.error('Failed to submit enquiry:', error);
-      alert('Failed to submit enquiry. Please try again.');
+      console.error('Error response:', error.response?.data);
+      const errorMsg = error.response?.data?.message || error.response?.data?.errors?.[0]?.msg || 'Failed to submit enquiry. Please try again.';
+      alert(errorMsg);
     } finally {
       setSubmitting(false);
     }

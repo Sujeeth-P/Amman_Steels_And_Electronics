@@ -19,17 +19,11 @@ const statusConfig = {
         icon: MessageSquare,
         description: 'Our team has reviewed your enquiry and reached out to you.'
     },
-    quoted: {
-        label: 'Quoted',
-        color: 'bg-purple-50 text-purple-700 border border-purple-200',
-        icon: FileText,
-        description: 'A price quotation has been prepared for your enquiry.'
-    },
     converted: {
-        label: 'Converted',
+        label: 'Ordered',
         color: 'bg-green-50 text-green-700 border border-green-200',
         icon: CheckCircle,
-        description: 'Your enquiry has been converted into an order. Thank you!'
+        description: 'Your order has been confirmed and is being processed. Thank you!'
     },
     closed: {
         label: 'Closed',
@@ -190,6 +184,17 @@ function EnquiryCard({ enquiry }) {
                                     <span className="font-bold text-xl text-green-700">{formatCurrency(enquiry.quotedAmount)}</span>
                                 </div>
                             )}
+
+                            {/* Closing Remarks - shown to customer when enquiry is closed */}
+                            {enquiry.status === 'closed' && enquiry.closingRemarks && (
+                                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <XCircle size={16} className="text-red-500" />
+                                        <span className="font-semibold text-red-700 text-sm">Closing Remarks</span>
+                                    </div>
+                                    <p className="text-sm text-red-600">{enquiry.closingRemarks}</p>
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 )}
@@ -237,7 +242,6 @@ export default function Orders() {
         all: enquiries.length,
         pending: enquiries.filter(e => e.status === 'pending').length,
         contacted: enquiries.filter(e => e.status === 'contacted').length,
-        quoted: enquiries.filter(e => e.status === 'quoted').length,
         converted: enquiries.filter(e => e.status === 'converted').length,
         closed: enquiries.filter(e => e.status === 'closed').length,
     };
@@ -288,17 +292,17 @@ export default function Orders() {
 
                     {/* Filter Tabs */}
                     <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-                        {['all', 'pending', 'contacted', 'quoted', 'converted', 'closed'].map((status) => (
+                        {[{key: 'all', label: 'All'}, {key: 'pending', label: 'Pending'}, {key: 'contacted', label: 'Contacted'}, {key: 'converted', label: 'Ordered'}, {key: 'closed', label: 'Closed'}].map(({key, label}) => (
                             <button
-                                key={status}
-                                onClick={() => setFilter(status)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === status
+                                key={key}
+                                onClick={() => setFilter(key)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filter === key
                                     ? 'bg-blue-600 text-white shadow-sm'
                                     : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                                     }`}
                             >
-                                {status.charAt(0).toUpperCase() + status.slice(1)}
-                                {statusCounts[status] > 0 && ` (${statusCounts[status]})`}
+                                {label}
+                                {statusCounts[key] > 0 && ` (${statusCounts[key]})`}
                             </button>
                         ))}
                     </div>
