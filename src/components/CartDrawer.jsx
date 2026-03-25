@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Trash2, Send, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -6,6 +6,51 @@ import { formatCurrency } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+
+// Editable quantity input with local state so user can freely clear & type
+function QuantityInput({ quantity, onCommit }) {
+  const [localVal, setLocalVal] = useState(String(quantity));
+  const inputRef = useRef(null);
+
+  // Sync from parent when quantity changes externally (e.g. +/- buttons)
+  useEffect(() => {
+    setLocalVal(String(quantity));
+  }, [quantity]);
+
+  const handleChange = (e) => {
+    const raw = e.target.value;
+    setLocalVal(raw);
+
+    // If the typed value is a valid number >= 1, update cart immediately
+    const parsed = parseInt(raw, 10);
+    if (!isNaN(parsed) && parsed >= 1) {
+      onCommit(parsed);
+    }
+  };
+
+  const handleBlur = () => {
+    const parsed = parseInt(localVal, 10);
+    if (isNaN(parsed) || parsed < 1) {
+      // Reset to 1 if left empty or invalid
+      setLocalVal('1');
+      onCommit(1);
+    }
+  };
+
+  return (
+    <input
+      ref={inputRef}
+      type="number"
+      min="1"
+      value={localVal}
+      onFocus={() => inputRef.current?.select()}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onKeyDown={(e) => { if (e.key === 'Enter') { e.target.blur(); } }}
+      className="w-14 text-center text-sm font-medium border-x border-slate-200 py-1 outline-none focus:bg-blue-50 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+    />
+  );
+}
 
 export default function CartDrawer() {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -129,7 +174,10 @@ export default function CartDrawer() {
                           >
                             -
                           </button>
-                          <span className="px-2 text-sm font-medium w-8 text-center">{item.quantity}</span>
+                          <QuantityInput
+                            quantity={item.quantity}
+                            onCommit={(val) => updateQuantity(item.id, val)}
+                          />
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="px-3 py-1 hover:bg-slate-50 text-slate-600"
